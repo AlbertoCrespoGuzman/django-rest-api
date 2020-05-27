@@ -20,6 +20,7 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
+The API is working in http://localhost:8000
 
 ## Tests
 
