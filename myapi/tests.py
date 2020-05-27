@@ -19,7 +19,6 @@ class TestStudent(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.student_1 = Student.objects.create(first_name='alberto', last_name='crespo', birthday=datetime.datetime(2020, 5, 17))
-        
 
     def test_student_list(self):
         response = self.client.get(reverse('student-list'))
@@ -72,14 +71,12 @@ class TestStudent(TestCase):
             Student.objects.create(first_name='', last_name='', birthday='')
 
 
-
 class TestCourse(TestCase):
 
     def setUp(self):
         self.client = APIClient()
         self.course_1 = Course.objects.create(name='maths')
         
-
     def test_course_list(self):
         response = self.client.get(reverse('course-list'))
         serializer = CourseSerializer(Course.objects.all(), many=True)
@@ -135,7 +132,6 @@ class TestMembership(TestCase):
         self.student_1 = Student.objects.create(first_name='zzz', last_name='zzz', birthday=datetime.date(1986,10,10))
         self.course_1 = Course.objects.create(name='Maths')
         
-
     def test_membership_list(self):
         response = self.client.get(reverse('membership-list'))
         serializer = MembershipSerializer(Membership.objects.all(), many=True)
@@ -144,7 +140,6 @@ class TestMembership(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         self.assertEquals(response.content, result_expected)
-
 
     def test_membership_detail(self):
         membership = Membership.objects.all().first()
@@ -185,7 +180,6 @@ class TestMembership(TestCase):
                                     
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-
     def test_remove_a_student_from_a_course(self):
         #adding membership between student_1 and course_1
         membership = {
@@ -206,6 +200,7 @@ class TestMembership(TestCase):
 
 
 class TestCourseAllOrdered(TestCase):
+
     def setUp(self):
         self.student_1 = Student.objects.create(first_name='zzz', last_name='zzz', birthday=datetime.date(1986,10,10))
         self.student_2 = Student.objects.create(first_name='aaa', last_name='zzz', birthday=datetime.date(1986,10,11))
@@ -227,7 +222,6 @@ class TestCourseAllOrdered(TestCase):
         #finally adding student_5
         self.membership_5_1 = Membership.objects.create(student=self.student_5, course=self.course_1)
         
-
     def test_get_course_1_ordered_by_student_last_name_first_name_and_join_date(self):
         response = self.client.get(reverse('course-detail', kwargs={'pk': self.course_1.id}))
 
@@ -244,10 +238,8 @@ class TestCourseAllOrdered(TestCase):
         # checking the order is really the expected
         students_order_expected = [3, 4, 6, 7, 5, 2, 1]
 
-        list_students_id_from_course_1 = []
-        for student in json.loads(response.content)['students']:
-            list_students_id_from_course_1.append(student['id'])
-
+        list_students_id_from_course_1 = [student['id'] for student in json.loads(response.content)['students']]
+        
         self.assertEqual(list_students_id_from_course_1, students_order_expected)
         
         
