@@ -1,0 +1,4 @@
+Django>=3.0.6
+djangorestframework>=3.11.0
+#psycopg2>=2.7 --> if you want add postgreSQL
+#django-mysql>=3.5.0 --> if you want add mySQL etc...

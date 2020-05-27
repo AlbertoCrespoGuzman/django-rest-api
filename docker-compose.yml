@@ -1,0 +1,20 @@
+version: '3'
+    
+services:
+  #db:  <---- use this to add postgreSQL database
+  #  image: postgres
+  #  environment:
+  #    - POSTGRES_DB=postgres
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASSWORD=postgres
+  db:
+    image: nouchka/sqlite3:latest
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
